@@ -111,8 +111,9 @@
 
             {% for p in post_list %}
             <!-- Blog Post -->
-            <div class="card mb-4" id="post-6">
-                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+            <div class="card mb-4">
+                <img class="card-img-top" src="{{ p.head_image.url }}" alt="Card image cap">
+<!--                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>-->
                 <div class="card-body">
                         <span class="badge badge-secondary float-right">programming</span>
 
