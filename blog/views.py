@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView,CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 # Create your views here.
 
-class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): #기본적으로 form 지원.
+class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): #기본적으로 form 지원. 상위에서 로그인 되어 있는지 처리.
     model=Post
     fields=['title','hook_text','content', 'head_image', 'file_upload', 'category','tags']#페이지를 띄워서 템플릿으로 넘겨줘
     # template_name=post_form.html
@@ -12,6 +12,7 @@ class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): #기본적
     def test_func(self):
         return self.request.user.is_superuser or self.request.user.is_staff
     # is_superuser는 관리자. superuser/staff/일반. 세개로 나뉨.
+    # 사용자 인증이 안된 상태에서는 글 쓸 수 없음.
 
     def form_valid(self,form):
         current_user=self.request.user
@@ -21,9 +22,6 @@ class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): #기본적
             return super(PostCreate,self).form_valid(form)
         else:
             return redirect('/blog/') # 강제적으로 '/blog/'로 보내버림
-
-
-
 
 # CBV
 class PostList(ListView):
