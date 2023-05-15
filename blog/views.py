@@ -4,6 +4,26 @@ from django.views.generic import ListView, DetailView,CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 # Create your views here.
 
+class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): #기본적으로 form 지원.
+    model=Post
+    fields=['title','hook_text','content', 'head_image', 'file_upload', 'category','tags']#페이지를 띄워서 템플릿으로 넘겨줘
+    # template_name=post_form.html
+
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
+    def form_valid(self,form):
+        current_user=self.request.user
+        if(current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser)):
+            form.instance.author=current_user
+            # not tag
+            return super(PostCreate,self).form_valid(form)
+        else:
+            return redirect('/blog/') # 강제적으로 '/blog/'로 보내버림
+
+
+
+
 # CBV
 class PostList(ListView):
     model = Post
@@ -60,27 +80,6 @@ def category_page(request, slug):  # 프로그래밍, 문화-예술, 웹개발, 
             'category': category,
         }
     )
-
-class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView):
-
-    model=Post
-    fields=['title','hook_text','content', 'head_image', 'file_upload', 'category','tags']
-    # template_name=post_form.html
-
-    def test_func(self):
-        return self.request.user.is_superuser or self.request.user.is_staff
-
-    def form_valid(self,form):
-        current_user=self.request.user
-        if(current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser)):
-            form.instance.author=current_user
-            # not tag
-            return super(PostCreate,self).form_valid(form)
-        else:
-            return redirect('/blog/') # 강제적으로 '/blog/'로 보내버림
-
-
-
 
 
     # def single_post_page(request, pk):

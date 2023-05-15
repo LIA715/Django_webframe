@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block head_title %}Blog{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'blog/bootstrap4/css/bootstrap.min.css' %}"> <!-- 여기를 참조 고정되서 사용 -->
+    <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}"> <!-- 여기를 참조 고정되서 사용 -->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -22,7 +22,7 @@
 </head>
 
 <body>
-{% include 'blog/nav.html' %}
+{% include 'blog/navbar.html' %}
 
 <div class="container my-4"> <!-- 마진을 의미, 위 아래에 중간 정도의 크기 mt(위), mb(아래), ml(오른쪽), mr(오른쪽) -->
     <!-- mx(수평), my(수직) -->
