@@ -11,6 +11,7 @@ class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): #기본적
 
     def test_func(self):
         return self.request.user.is_superuser or self.request.user.is_staff
+    # is_superuser는 관리자. superuser/staff/일반. 세개로 나뉨.
 
     def form_valid(self,form):
         current_user=self.request.user
