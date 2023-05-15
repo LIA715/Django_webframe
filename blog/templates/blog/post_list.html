@@ -30,6 +30,7 @@
                 {% endif %}
 
                 <p class="card-text">{{ p.content | truncatechars:45}}</p> <!-- words 단어당 -->
+
                 <!--tag area-->
                 {% if p.tags.exists %}
                 <i class="fas fa-tags"></i>
