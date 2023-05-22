@@ -43,11 +43,12 @@
 
         <!-- Post content-->
         <section class="mb-5">
-            <p class="fs-5 mb-4">{{ post.content }}</p>
+            <p class="fs-5 mb-4">{{ post.content | linebreaksbr }}</p>
+
             {% if post.tags.exists %}
             <i class="fas fa-tags"></i>
             {% for tag in post.tags.all %}
-            <span class="badge badge-pill badge-light">{{tag}}</span>
+            <span class="badge badge-pill badge-light">{{ tag }}</span>
             {% endfor %}
             <br/><br/>
             {% endif %}
