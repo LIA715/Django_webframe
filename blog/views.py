@@ -6,6 +6,9 @@ from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
+def csrf_failure(request,reason=""):
+    return redirect('/blog/')
+
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title','hook_text','content','head_image','file_upload','category','tags']

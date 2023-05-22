@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "allauth",
     "allauth.account",
-    "allauth.socialacoount",
+    "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
 ]
 
@@ -141,5 +141,5 @@ SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 #이메일 인증과정은 그냥 넘어가겠다.
-#LOGIN_REDIRECT_URL = "/blog/"
+LOGIN_REDIRECT_URL = "/blog/"
 
