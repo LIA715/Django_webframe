@@ -56,3 +56,17 @@ class Post(models.Model):
         #전체 경로에서 이름 가져오고 .을 기준으로 나눠(파일명.확장자). 배열이 됨. -1은 맨 마지막 인덱스를 의미. 앞에 갯수 상관X
         #맨 마지막에 있는 확장자명을 가져와서 리턴해줌.
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.author}::{self.content}'
+
+    def get_absolute_url(self):
+        return f'{self.post.get_absolute_url()}#comment{self.pk}'
+
+

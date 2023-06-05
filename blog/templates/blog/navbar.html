@@ -1,3 +1,4 @@
+{% load socialaccount %}
 <!-- navbar 링크 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light"> <!-- 네비게이션 바의 스타일을 지정하는 클래스, 밝은색 배경의 내비게이션 바-->
     <div class="container"> <!-- 가장 바깥쪽 컨테이너 -->
@@ -54,14 +55,13 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-6"> <!-- xs, sm, md, lg -->
-                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="">
+                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'google' %}">
                             <i class="fa-brands fa-google "></i>&nbsp; Login with Google
                         </a>
                         <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="/accounts/login/">
                             <i class="fa-sharp fa-regular fa-envelope"></i>&nbsp; Login with USERNAME
                         </a>
                     </div>
-
                     <div class="col-sm-6">
                         <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="accounts/signup/">
                             <i class="fa-solid fa-square-envelope"></i>&nbsp; Sign up with E-mail

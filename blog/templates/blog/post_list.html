@@ -1,74 +1,79 @@
 {% extends 'blog/base.html' %}
 
 {% block main_area %}
-    {% if user.is_authenticated%}
+    {% if user.is_authenticated %}
         {% if user.is_superuser or user.is_staff %}
-            <a class="btn btn-info btn-sm float-right" href="/blog/create_post/" role="button"><i class="fas fa-pen"></i>&nbsp;&nbsp;New Post</a>
+            <a class="btn btn-info btn-sm float-right" href="/blog/create_post/" role="button">
+                <i class="fas fa-pen"></i>&nbsp;&nbsp; New Post
+            </a>
         {% endif %}
     {% endif %}
 
-        <h1>Blog
-            {% if category %}<span class="badge badge-secondary">{{ category }}</span>
-            {% endif %}
-        </h1>
+    <!-- Blog post-->
+    <h1>Blog
+        {% if category %}<span class="badge badge-secondary">{{ category }}</span>
+        {% endif %}
+    </h1>
     {% if post_list.exists %}
         {% for p in post_list %}
-        <div class="card mb-4" id="post-{{p.pk}}">
-            {% if p.head_image %}
-            <img class="card-img-top" src="{{ p.head_image.url }}" alt="{{ p }} head_image" height="300"/>
-            {% else %}
-            <img class="card-img-top" src="https://picsum.photos/seed/{{ p.pk }}/800/300" alt="random image"/>
-            {% endif %}
-            <div class="card-body">
-                {% if p.category %}
-                <span class="badge badge-secondary float-right">{{p.category}}</span>
+            <div class="card mb-4" id="post-{{ p.pk }}">
+                {% if p.head_image %}
+                    <img class="card-img-top" src="{{ p.head_image.url }}" alt="{{ p }} head_image" height="300"/>
                 {% else %}
-                <span class="badge badge-secondary float-right">미분류</span>
-                {% endif %}
-                <!--
-                <div class="small text-muted">{{ p.created_at }} by {{p.author | lower }}</div> -->
-                <!-- upper 사용하면 대문자 -->
-                <h2 class="card-title h4">{{ p.title }}</h2>
-
-                {% if p.hook_test %}
-                <h5 class="text-muted">{{ p.hook_test }}</h5>
+                    <img class="card-img-top" src="https://picsum.photos/seed/{{ p.pk }}/800/200" alt="random image"/>
                 {% endif %}
 
-                <p class="card-text">{{ p.content | linebreaksbr | truncatechars:15 }}</p> <!-- words 단어당 -->
+                <div class="card-body">
+                    {% if p.category %}
+                        <span class="badge badge-secondary float-right">{{ p.category }}</span>
+                    {% else %}
+                        <span class="badge badge-secondary float-right">미분류</span>
+                    {% endif %}
+                    <!--
+                    <div class="small text-muted">
+                        {{ p.created_at }} by {{ p.author | upper }}
+                    </div>
+                    -->
+                    <h2 class="card-title h4">{{ p.title }}</h2>
+                    {% if p.hook_text %}
+                        <h5 class="text-muted">{{ p.hook_text }}</h5>
+                    {% endif %}
 
-                <!--tag area-->
-                {% if p.tags.exists %}
-                    <i class="fas fa-tags"></i>
-                        {% for tag in p.tags.iterator %}
-                        <a href="{{ tag.get_absolute_url }}"><span class="badge badge-pill badge-light">{{ tag }}</span></a>
+                    <p class="card-text">{{ p.content | linebreaksbr |truncatewords:5 }}</p>
+
+                    <!-- tag area -->
+                    {% if p.tags.exists %}
+                        <i class="fas fa-tags"></i>
+                        {% for tag in p.tags.all %}
+                            <span class="badge badge-pill badge-light">{{ tag }}</span>
                         {% endfor %}
-                    <br/>
-                    <br/>
-                {% endif %}
+                        <br/><br/>
+                    {% endif %}
 
-
-                <a class="btn btn-primary" href="{{ p.get_absolute_url }}">Read more →</a>
+                    <a class="btn btn-primary" href="{{ p.get_absolute_url }}">Read more →</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Posted on {{ p.created_at }} by
+                    <a herf="#">{{ p.author | upper }}</a>
+                </div>
             </div>
-            <div class="card-footer text-muted">
-                Posted on {{p.created_at}} by <a href="#">{{p.author | lower }}</a>
-            </div>
-        </div>
         {% endfor %}
-        {% else %}
-        <h3>아직 글이 없습니다.</h3>
-        {% endif %}
-        <!-- Page 밑에 번호 1,2,3,..-->
-        <nav aria-label="Pagination">
-            <hr class="my-0"/>
-            <ul class="pagination justify-content-center my-4">
-                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a>
-                </li>
-                <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-            </ul>
-        </nav>
-    {% endblock %}
+    {% else %}
+        <h3>아직 게시물이 없습니다.</h3>
+    {% endif %}
+    <!-- Pagination-->
+    <nav aria-label="Pagination">
+        <hr class="my-0"/>
+        <ul class="pagination justify-content-center my-4">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a>
+            </li>
+            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+            <li class="page-item"><a class="page-link" href="#!">15</a></li>
+            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+        </ul>
+    </nav>
+
+{% endblock %}
