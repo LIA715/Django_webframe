@@ -3,7 +3,7 @@ from .models import Post, Category, Tag
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-
+from .forms import CommentForm
 
 # Create your views here.
 
@@ -42,6 +42,7 @@ class PostDetail(DetailView):
         context['categories'] = Category.objects.all()  # Category DB의 내용
         context['no_category_post_count'] = Post.objects.filter(
             category=None).count()  # category가 없을수 있기때문에 no_category
+        context['comment_form'] = CommentForm
         return context  # => 리턴은 post_detail.html로 들어가게된다. (post.categories,no_category_post_count) 값이 넘어가게됌.
 
 
@@ -111,3 +112,5 @@ def csrf_failure(request, reason=""):
     #             'post':post,
     #         }
     #     )
+#
+# def new_comment(request,pk):
