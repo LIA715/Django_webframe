@@ -2,6 +2,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    path('search/<str:q>', views.PostSearch.as_view()),
     path('', views.PostList.as_view()), # CBV 방식의 함수 호출 # 클래스 방식 # blog/
     path('<int:pk>/new_comment/', views.new_comment), #/blog/1/new_comment/
     path('update_comment/<int:pk>/',views.CommentUpdate.as_view()), #blog/update_comment/2/ 2번 댓글을 수정해라

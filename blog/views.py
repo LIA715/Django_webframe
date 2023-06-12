@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 # Create your views here.
 
@@ -12,6 +13,7 @@ from django.shortcuts import get_object_or_404
 class PostList(ListView):
     model = Post
     ordering = '-pk'
+    paginate_by = 3
     template_name = 'blog/post_list.html'
 
     def get_context_data(self, **kwargs):
@@ -151,3 +153,27 @@ class CommentUpdate(LoginRequiredMixin,UpdateView):
             return super(CommentUpdate, self).dispatch(request,*args,**kwargs)
         else:
             raise PermissionDenied
+
+    #class PostList(ListView):
+    #   model = Post;
+    #   template_name = post_list.html
+    #   def gett_qeuryset(self):
+    #   post_list= Post.objects.all
+
+
+class PostSearch(PostList):  # post_list.html
+    paginated_by = None  # pagination 안해.
+
+    def get_queryset(self):  # Post(Post.objects.all) 불러옴.
+        q = self.kwargs['q']
+        post_list = Post.objects.filter(
+            Q(title__contains=q) | Q(tags__name__contains=q)
+        ).distinct()
+        return post_list
+
+    def get_context_data(self, **kwargs): #검색한 단어 결과 보여주기 위한 작업.
+        context = super(PostSearch, self).get_context_data()
+        q = self.kwargs['q'] #검색어 가져옴.
+        context['search_info'] = f'Search:{q}({self.get_queryset().count()})'
+
+        return context
