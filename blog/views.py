@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Post, Category, Tag
+from .models import Post, Category, Tag,Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from .forms import CommentForm
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -65,6 +66,32 @@ def category_page(request, slug):  # 프로그래밍, 문화-예술, 웹개발, 
         }
     )
 
+def new_comment(request,pk):
+   if request.user.is_authenticated:
+       post = get_object_or_404(Post, pk=pk) #post모델에서 pk번호에 해당되는 하나만 가져오기.
+
+       if request.method == "POST":
+           comment_form = CommentForm(request.POST)
+           if comment_form.is_valid():
+               comment = comment_form.save(commit=False)
+               comment.post = post
+               comment.author = request.user
+               comment.save()
+               return redirect(comment.get_absolute_url())
+       else:
+           return redirect(post.get_absolute_url())
+   else:
+       return PermissionDenied
+
+def delete_comment(request,pk):
+    comment = get_object_or_404(Comment,pk=pk)
+    post = comment.post
+    if request.user.is_authenticated and request.user == comment.author:
+        comment.delete()
+        return redirect(post.get_absolute_url())
+    else:
+        raise PermissionDenied
+
 
 class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post
@@ -114,3 +141,13 @@ def csrf_failure(request, reason=""):
     #     )
 #
 # def new_comment(request,pk):
+
+class CommentUpdate(LoginRequiredMixin,UpdateView):
+    model = Comment
+    form_class = CommentForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(CommentUpdate, self).dispatch(request,*args,**kwargs)
+        else:
+            raise PermissionDenied
