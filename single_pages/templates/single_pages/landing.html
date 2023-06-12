@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,15 +7,55 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>landing page입니다.</title>
-</head>
-<body>
-<nav>
-    <a href="/blog/">Blog</a>
-    <a href="/about_me/">About me</a>
-</nav>
 
-<h1>landing page입니다.</h1>
-<h3>도메인 뒤에 아무것도 없을때 views.py안에 있는 landing함수를 실행해 대문 페이지를 보여줍니다.</h3>
+    <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}"> <!-- 여기를 참조 고정되서 사용 -->
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+            integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+            crossorigin="anonymous"></script>
+</head>
+<body style="background-color:gray;">
+    {% include 'blog/navbar.html' %}
+
+<div class = "container">
+    <div class="row justify-content-between">
+        <div class = "col-lg-5 mt-3">
+            <h1>landing page입니다.</h1>
+            <hr/>
+            <p>잘 보이시나요?</p>
+
+    </div>
+        <div class="col-lg-5 mt-3">
+            <h2>Blog - Recent posts</h2>
+            {% for p in recent_posts %}
+            <div class = "card mt-1" style="background-color:rgba(255,255,255,0.6)">
+                <div class = "card-body">
+                    <h5>
+                        <a href = "{{ p.get_absolute_url }}" class="text-decoration-none text-dark">
+                        {{p.title}}
+                        </a>
+                    </h5>
+                    <span class="badge badge-pill badge-light float-right">
+                        {{ p.author.username }} &nbsp;&nbsp; {{ p.created_at }}
+                    </span>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+<div class="fixed-bottom">
+    {% include 'blog/footer.html' %}
+</div>
 
 </body>
 </html>

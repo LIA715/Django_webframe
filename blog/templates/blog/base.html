@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-{% load static %} <!-- static 폴더를 사용하겠다 -->
+{% load static %} <!-- static 폴더를 사용하겠다. css나 이런거 가져오려고. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block head_title %}Blog{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}"> <!-- 여기를 참조 고정되서 사용 -->
     <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}"> <!-- 여기를 참조 고정되서 사용 -->
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
